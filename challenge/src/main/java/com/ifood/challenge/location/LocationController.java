@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "feather/location/{number}")
+@RequestMapping(path = "feather/{number}")
 public class LocationController {
     private final LocationService locationService;
 
