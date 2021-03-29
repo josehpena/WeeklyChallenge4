@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.plaf.synth.SynthMenuBarUI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "feather/{number}")
+
+@RequestMapping(path = "feather/")
 public class LocationController {
     private final LocationService locationService;
 
@@ -16,9 +18,15 @@ public class LocationController {
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
-    
+
     @GetMapping
-    public List<Location> getLocations(@PathVariable("number")int number){
-        return locationService.getLocation(number);
+    public List homePage(){
+        return List.of("Hello World");
     }
+    
+    @GetMapping(path="/{number}")
+    public List<Location> getLocations(@PathVariable("number")int number){
+        return List.of(locationService.getLocation(number));
+    }
+
 }

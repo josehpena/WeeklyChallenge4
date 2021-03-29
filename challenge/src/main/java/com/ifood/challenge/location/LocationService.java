@@ -2,23 +2,23 @@ package com.ifood.challenge.location;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Random;
-
 @Service
 public class LocationService {
-    public List<Location> getLocation(int number){
+    public Location[] getLocation(int number){
         Location locations[] = new Location[number];
+        double doubleFirst = 1.000;
+        double doubleSecond = 2.000;
         for(int i = 0; i < number; i++){
              locations[i] = new Location(
                     "Location "+i,
-                     new Random().nextDouble(),
-                     new Random().nextDouble()
+                     doubleFirst,
+                     doubleSecond
              );
+             doubleFirst += 0.001;
+             doubleSecond += 0.001;
         }
 
-        return List.of(
-                locations);
+        return locations;
 
     }
 
