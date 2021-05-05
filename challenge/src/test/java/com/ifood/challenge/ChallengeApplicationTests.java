@@ -60,5 +60,16 @@ class ChallengeApplicationTests {
 					.andExpect(jsonPath("$[0].name").value("Location 0"));
 	}
 
+	@Test
+	public void givenBadArguments_whenGetSpecificException_thenBadRequest() throws Exception {
+
+	mockMvc.perform(get("/feather/-1")
+			.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().is(500)).andReturn();
+	}
+
+
+
+
 
 }
