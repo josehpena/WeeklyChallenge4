@@ -1,5 +1,7 @@
 package com.ifood.challenge.location;
 
+import java.util.Objects;
+
 public class Location {
     private String name;
     private Double latitude;
@@ -46,5 +48,18 @@ public class Location {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return name.equals(location.name) && latitude.equals(location.latitude) && longitude.equals(location.longitude);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, latitude, longitude);
     }
 }
