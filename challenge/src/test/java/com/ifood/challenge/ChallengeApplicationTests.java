@@ -1,6 +1,7 @@
 package com.ifood.challenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ifood.challenge.location.ExceptionController;
 import com.ifood.challenge.location.LocationController;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,7 +40,7 @@ class ChallengeApplicationTests {
 	public void setUp() {
 		objectMapper = new ObjectMapper();
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(restController)
+				.standaloneSetup(restController, new ExceptionController())
 				.build();
 	}
 
@@ -62,10 +65,14 @@ class ChallengeApplicationTests {
 
 	@Test
 	public void givenBadArguments_whenGetSpecificException_thenBadRequest() throws Exception {
+		String exceptionParam = "bad_arguments";
 
-	mockMvc.perform(get("/feather/-1")
-			.contentType(MediaType.APPLICATION_JSON))
-			.andExpect(status().is(500)).andReturn();
+		mockMvc.perform(get("/feather/-1", exceptionParam)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof ExceptionController.BadArgumentsException))
+				.andExpect(result -> assertEquals("bad arguments", result.getResolvedException().getMessage()));
 	}
 
 
