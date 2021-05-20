@@ -3,7 +3,6 @@ package com.ifood.challenge;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifood.challenge.location.ExceptionController;
 import com.ifood.challenge.location.LocationController;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,13 +34,6 @@ class ChallengeApplicationTests {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Before
-	public void setUp() {
-		objectMapper = new ObjectMapper();
-		mockMvc = MockMvcBuilders
-				.standaloneSetup(restController, new ExceptionController())
-				.build();
-	}
 
 	@Test
 	public void not_found_test_404() throws Exception {
@@ -64,9 +55,17 @@ class ChallengeApplicationTests {
 	}
 
 	@Test
-	public void givenBadArguments_whenGetSpecificException_thenBadRequest() throws Exception {
-		String exceptionParam = "bad_arguments";
+	public void expect_empty_body() throws Exception {
+		mockMvc.perform(get("/feather/0")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(jsonPath("$").isEmpty());
 
+	}
+
+	@Test
+		public void givenBadArguments_whenGetSpecificException_thenBadRequest() throws Exception {
+		String exceptionParam = "bad_arguments";
 		mockMvc.perform(get("/feather/-1", exceptionParam)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -74,6 +73,7 @@ class ChallengeApplicationTests {
 				.andExpect(result -> assertTrue(result.getResolvedException() instanceof ExceptionController.BadArgumentsException))
 				.andExpect(result -> assertEquals("bad arguments", result.getResolvedException().getMessage()));
 	}
+
 
 
 
