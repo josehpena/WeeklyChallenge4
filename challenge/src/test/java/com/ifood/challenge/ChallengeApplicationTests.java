@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,7 +52,22 @@ class ChallengeApplicationTests {
 					.andDo(print())
 					.andExpect(status().isOk())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-					.andExpect(jsonPath("$[0].name").value("Location 0"));
+					.andExpect(jsonPath("$[0].name").value("Location 1"));
+	}
+
+	@Test
+	public void create_a_list_of_locations() throws Exception{
+
+		ResultActions resultActions = mockMvc.perform(
+				get("/feather/10")
+						.contentType(MediaType.APPLICATION_JSON));
+
+		resultActions
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(10)))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$[9].name").value("Location 10"));
 	}
 
 	@Test

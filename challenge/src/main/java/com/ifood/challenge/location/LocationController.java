@@ -18,11 +18,6 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping
-    public List homePage(){
-        return List.of("Hello World");
-    }
-    
     @GetMapping(path="/{number}")
     public List<Location> getLocations(@PathVariable("number")int number){
 

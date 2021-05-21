@@ -14,7 +14,7 @@ public class LocationService {
         ArrayList<Location> locations = new ArrayList<>();
         for (int i = 0; i < number; i++) {
             locations.add(new Location(
-                    "Location " + i,
+                    "Location " + (i + 1),
                     new Random().nextDouble(),
                     new Random().nextDouble()
             ));
