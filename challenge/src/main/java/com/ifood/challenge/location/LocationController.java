@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.plaf.synth.SynthMenuBarUI;
 import java.util.List;
 
 @RestController
@@ -19,14 +18,14 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping
-    public List homePage(){
-        return List.of("Hello World");
-    }
-    
     @GetMapping(path="/{number}")
     public List<Location> getLocations(@PathVariable("number")int number){
-        return List.of(locationService.getLocation(number));
+
+        if (number < 0) {
+            throw new ExceptionController.BadArgumentsException("bad arguments");
+        }
+
+        return locationService.getLocation(number);
     }
 
 }
