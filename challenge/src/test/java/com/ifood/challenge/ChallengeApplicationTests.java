@@ -1,8 +1,8 @@
 package com.ifood.challenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ifood.challenge.location.ExceptionController;
 import com.ifood.challenge.location.LocationController;
+import com.ifood.challenge.location.LocationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,6 +33,9 @@ class ChallengeApplicationTests {
 	//Instância do MockMVC
 	@Autowired
 	private MockMvc mockMvc;
+
+	@Autowired
+	private LocationService locationService;
 
 
 	@Test
@@ -81,13 +83,9 @@ class ChallengeApplicationTests {
 
 	@Test
 		public void givenBadArguments_whenGetSpecificException_thenBadRequest() throws Exception {
-		String exceptionParam = "bad_arguments";
-		mockMvc.perform(get("/feather/-1", exceptionParam)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof ExceptionController.BadArgumentsException))
-				.andExpect(result -> assertEquals("bad arguments", result.getResolvedException().getMessage()));
+
+		assertThrows(IllegalArgumentException.class,() -> { locationService.getLocation(-1);});
+
 	}
 
 

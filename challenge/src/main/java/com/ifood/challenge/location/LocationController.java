@@ -20,11 +20,6 @@ public class LocationController {
 
     @GetMapping(path="/{number}")
     public List<Location> getLocations(@PathVariable("number")int number){
-
-        if (number < 0) {
-            throw new ExceptionController.BadArgumentsException("bad arguments");
-        }
-
         return locationService.getLocation(number);
     }
 
