@@ -21,11 +21,15 @@ public class LocationController {
 
     @GetMapping(path="/{number}")
     public ResponseEntity<List<Location>> getLocations(@PathVariable("number")int number){
+        List<Location> listLocation = null;
         try {
-             return ResponseEntity.ok().body(locationService.getLocation(number));
+             listLocation = locationService.getLocation(number);
+            return new ResponseEntity<List<Location>>(listLocation, HttpStatus.OK);
         }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<List<Location>>(listLocation, HttpStatus.BAD_REQUEST);
         }
+
     }
 
 }
