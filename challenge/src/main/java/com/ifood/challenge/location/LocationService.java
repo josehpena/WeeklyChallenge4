@@ -12,7 +12,7 @@ public class LocationService {
     public List<Location> getLocation(int number) {
 
         if(number < 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Ilegal Argument");
         }
 
         ArrayList<Location> locations = new ArrayList<>();

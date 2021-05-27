@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -84,8 +83,10 @@ class ChallengeApplicationTests {
 	@Test
 		public void givenBadArguments_whenGetSpecificException_thenBadRequest() throws Exception {
 
-		assertThrows(IllegalArgumentException.class,() -> { locationService.getLocation(-1);});
-
+		mockMvc.perform(get("/feather/-1")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isBadRequest());
 	}
 
 
