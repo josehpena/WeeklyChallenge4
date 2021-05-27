@@ -11,6 +11,10 @@ public class LocationService {
 
     public List<Location> getLocation(int number) {
 
+        if(number < 0){
+            throw new IllegalArgumentException("Ilegal Argument");
+        }
+
         ArrayList<Location> locations = new ArrayList<>();
         for (int i = 0; i < number; i++) {
             locations.add(new Location(
